@@ -1,0 +1,101 @@
+/* Custom styles for Professional Reminder & Scheduler */
+
+/* Status indicators */
+.status-needs-action {
+  @apply bg-red-100 text-red-800;
+}
+
+.status-in-progress {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-done {
+  @apply bg-green-100 text-green-800;
+}
+
+/* Status badges */
+.status-badge {
+  @apply px-2 py-1 rounded-full text-xs font-medium;
+}
+
+/* Country dropdown */
+#countryDropdown {
+  scrollbar-width: thin;
+}
+
+#countryDropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+#countryDropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#countryDropdown::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+#countryDropdown::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.country-item {
+  @apply py-2 px-3 hover:bg-gray-100 cursor-pointer;
+}
+
+.country-item.selected {
+  @apply bg-blue-100;
+}
+
+/* Custom focus styles */
+input:focus,
+textarea:focus,
+select:focus {
+  @apply outline-none ring-2 ring-blue-500 border-blue-500;
+}
+
+/* Animated notification bell */
+@keyframes bellRing {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20%,
+  60% {
+    transform: rotate(8deg);
+  }
+  40%,
+  80% {
+    transform: rotate(-8deg);
+  }
+}
+
+.notification-active .fa-bell {
+  animation: bellRing 1s ease;
+  color: #ff6b6b;
+}
+
+/* Time conversion highlight */
+#istTime.updated {
+  animation: highlight 1s ease;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: #bbe1fa;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Action buttons hover effects */
+.action-btn:hover {
+  @apply transform scale-110;
+}
+
+/* Status filter buttons */
+.status-filter.active {
+  @apply ring-2 ring-offset-1 ring-blue-500;
+}

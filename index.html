@@ -1,12 +1,293 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>My GitHub Page</title>
-</head>
-<body>
-  <h1>Hello from GitHub Pages!</h1>
-  <button onclick="showNotification()">Click Me</button>
-
-  <script src="script.js"></script>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Professional Reminder & Scheduler</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></scrip    <!-- Scripts -->
+    <script src="js/countries.js"></script>
+    <script src="js/notification-debug.js"></script>
+    <script src="js/app.js"></script>
 </body>
+</html>  <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0f4c75",
+              secondary: "#3282b8",
+              accent: "#1b262c",
+              light: "#bbe1fa",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-gray-50 text-gray-800">
+    <!-- Main Container -->
+    <div class="container mx-auto p-4 max-w-5xl">
+      <!-- Header -->
+      <header class="mb-8 text-center py-4">
+        <h1 class="text-3xl font-bold text-primary mb-2">
+          Professional Reminder & Scheduler
+        </h1>
+        <p class="text-gray-600">
+          Manage your schedule efficiently with time zone conversion
+        </p>
+      </header>
+
+      <!-- Main Content -->
+      <main class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Left Column: New Reminder Form -->
+        <div class="md:col-span-2 bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-4 text-primary border-b pb-2">
+            Create New Reminder
+          </h2>
+
+          <form id="reminderForm" class="space-y-4">
+            <!-- Country and Phone Code Input -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="md:col-span-2">
+                <label
+                  for="countrySelect"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Country</label
+                >
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="countrySearch"
+                    class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Search country..."
+                  />
+                  <div
+                    id="countryDropdown"
+                    class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+                  >
+                    <!-- Countries will be populated here -->
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Phone Code</label
+                >
+                <div
+                  class="flex items-center border border-gray-300 rounded-md overflow-hidden"
+                >
+                  <span
+                    id="selectedCountryCode"
+                    class="bg-gray-100 text-gray-700 px-3 py-2 border-r"
+                    >+1</span
+                  >
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    class="flex-1 py-2 px-3 focus:outline-none"
+                    placeholder="Phone Number"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Date and Time Input -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label
+                  for="dateInput"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Date</label
+                >
+                <input
+                  type="date"
+                  id="dateInput"
+                  class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label
+                  for="timeInput"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Time</label
+                >
+                <input
+                  type="time"
+                  id="timeInput"
+                  class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div class="col-span-2">
+                <label
+                  for="istTime"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Converted to IST</label
+                >
+                <input
+                  type="text"
+                  id="istTime"
+                  readonly
+                  class="w-full border bg-gray-50 border-gray-300 rounded-md py-2 px-3 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <!-- Notes Input -->
+            <div>
+              <label
+                for="notesInput"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Reminder Notes</label
+              >
+              <textarea
+                id="notesInput"
+                rows="3"
+                class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter your reminder notes here..."
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-primary hover:bg-secondary text-white font-medium py-2 px-6 rounded-md transition duration-300 flex items-center"
+              >
+                <i class="fas fa-plus mr-2"></i> Create Reminder
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Column: Status & Notifications -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-4 text-primary border-b pb-2">
+            Notifications
+          </h2>
+          <div class="mb-4">
+            <button
+              id="notificationPermission"
+              class="w-full bg-secondary hover:bg-primary text-white py-2 px-4 rounded-md transition duration-300"
+            >
+              <i class="fas fa-bell mr-2"></i> Enable Notifications
+            </button>
+            <p class="mt-2 text-xs text-gray-500 italic">Double-click to create a test notification (10 sec)</p>
+          </div>
+          <div class="p-4 bg-light rounded-md mb-4">
+            <h3 class="font-medium text-primary mb-1">Notification Status</h3>
+            <p id="notificationStatus" class="text-sm">Not enabled</p>
+          </div>
+          <div class="mt-4 p-4 bg-gray-50 rounded-md text-sm">
+            <h3 class="font-medium text-primary mb-1">Troubleshooting</h3>
+            <ul class="list-disc pl-4 space-y-1">
+              <li>Make sure to enable notifications in your browser</li>
+              <li>Some browsers block notifications on local files</li>
+              <li>Check browser console for notification logs</li>
+              <li>Try creating a test notification</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+
+      <!-- Scheduler History -->
+      <section class="mt-8 bg-white p-6 rounded-lg shadow">
+        <h2 class="text-xl font-semibold mb-4 text-primary border-b pb-2">
+          Reminder History
+        </h2>
+
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <button
+            class="status-filter bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium active"
+            data-filter="all"
+          >
+            All
+          </button>
+          <button
+            class="status-filter bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium"
+            data-filter="needs-action"
+          >
+            Needs Action
+          </button>
+          <button
+            class="status-filter bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium"
+            data-filter="in-progress"
+          >
+            In Progress
+          </button>
+          <button
+            class="status-filter bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
+            data-filter="done"
+          >
+            Done
+          </button>
+        </div>
+
+        <!-- Reminders Table -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Date & Time (IST)
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Phone
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Notes
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Status
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody id="remindersList" class="bg-white divide-y divide-gray-200">
+              <!-- Reminders will be populated here -->
+              <tr class="text-center text-gray-500">
+                <td colspan="5" class="px-6 py-4">
+                  No reminders scheduled yet
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 py-4 text-center text-gray-500 text-sm">
+      <p>&copy; 2025 Professional Reminder & Scheduler</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/countries.js"></script>
+    <script src="js/app.js"></script>
+  </body>
 </html>
